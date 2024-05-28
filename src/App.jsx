@@ -1,19 +1,23 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import './App.css';
-
-const stBox = styled.div`
-    width: 100px;
-    height: 100px;
-    border: 1px solid red;
-    margin: 20px;
-`;
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Detail from './pages/Detail';
 
 function App() {
+    const [expenses, setExpenses] = useState([]);
+
+    useEffect(() => {
+        const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
+        setExpenses(savedExpenses);
+    }, []);
+
     return (
-        <>
-            <stBox></stBox>
-        </>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home setExpenses={setExpenses} />} />
+                <Route path="/detail/:id" element={<Detail expenses={expenses} setExpenses={setExpenses} />} />
+            </Routes>
+        </Router>
     );
 }
 
