@@ -1,4 +1,6 @@
 import React from 'react';
+import { useExpense } from '../../context/ExpenseContext';
+
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -33,7 +35,8 @@ const Button = styled.button`
     color: white;
 `;
 
-const ExpenseForm = ({ setExpenses }) => {
+const ExpenseForm = () => {
+    const { expenses, setExpenses } = useExpense();
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);

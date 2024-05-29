@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+// Home.js
+import React, { useState } from 'react';
 import ExpenseForm from '../components/home/ExpenseForm';
 import ExpenseList from '../components/home/ExpenseList';
 import MonthlyExpenseList from '../components/home/MonthlyExpenseList';
@@ -11,17 +12,12 @@ const HomeWrapper = styled.div`
     align-items: center;
 `;
 
-const Home = ({ setExpenses }) => {
+const Home = () => {
     const [filteredExpenses, setFilteredExpenses] = useState([]);
-
-    useEffect(() => {
-        const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        setExpenses(savedExpenses);
-    }, [setExpenses]);
 
     return (
         <HomeWrapper>
-            <ExpenseForm setExpenses={setExpenses} />
+            <ExpenseForm />
             <MonthlyExpenseList setFilteredExpenses={setFilteredExpenses} />
             <ExpenseList filteredExpenses={filteredExpenses} />
         </HomeWrapper>

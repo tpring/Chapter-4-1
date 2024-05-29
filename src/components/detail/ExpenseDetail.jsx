@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useExpense } from '../../context/ExpenseContext';
 import styled from 'styled-components';
 
 const DetailContainer = styled.div`
@@ -47,7 +48,7 @@ const Button = styled.button`
     margin-top: 10px;
 `;
 
-function ExpenseDetail({ expenses, setExpenses }) {
+function ExpenseDetail() {
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -57,13 +58,11 @@ function ExpenseDetail({ expenses, setExpenses }) {
     const descriptionRef = useRef();
 
     const [expense, setExpense] = useState(null);
+    const { expenses, setExpenses } = useExpense();
 
     useEffect(() => {
-        const fetchExpense = () => {
-            const foundExpense = expenses.find((expense) => expense.id === id);
-            setExpense(foundExpense);
-        };
-        fetchExpense();
+        const foundExpense = expenses.find((expense) => expense.id === id);
+        setExpense(foundExpense);
     }, [id, expenses]);
 
     const updateExpense = () => {
@@ -76,7 +75,6 @@ function ExpenseDetail({ expenses, setExpenses }) {
         };
 
         const updatedExpenses = expenses.map((expense) => (expense.id === id ? updated : expense));
-        localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
         setExpenses(updatedExpenses);
 
         alert('수정되었습니다.');
@@ -86,7 +84,6 @@ function ExpenseDetail({ expenses, setExpenses }) {
     const removeExpense = () => {
         if (window.confirm('삭제하시겠습니까?')) {
             const filteredExpenses = expenses.filter((expense) => expense.id !== id);
-            localStorage.setItem('expenses', JSON.stringify(filteredExpenses));
             setExpenses(filteredExpenses);
             navigate('/');
         }

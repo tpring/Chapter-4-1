@@ -9,10 +9,10 @@ const DetailWrapper = styled.div`
     height: 100vh;
 `;
 
-function Detail({ expenses, setExpenses }) {
+function Detail() {
     return (
         <DetailWrapper>
-            <ExpenseDetail expenses={expenses} setExpenses={setExpenses} />
+            <ExpenseDetail />
         </DetailWrapper>
     );
 }
