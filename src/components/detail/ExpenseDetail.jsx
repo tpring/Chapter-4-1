@@ -3,6 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const DetailContainer = styled.div`
+    background-color: aliceblue;
+    width: 1000px;
+    margin: 10px 0;
+    padding: 1rem;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -22,13 +27,14 @@ const Label = styled.label`
     width: 300px;
     margin-left: 13px;
 `;
-const DInput = styled.input`
+const DInput = styled.textarea`
     padding: 10px;
     margin: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
     width: 960px;
     height: 100px;
+    white-space: pre-wrap;
 `;
 
 const DLabel = styled.label`
@@ -108,9 +114,7 @@ function ExpenseDetail({ expenses, setExpenses }) {
                     </div>
                     <div>
                         <DLabel>내용</DLabel>
-                        <p>
-                            <DInput type="text" defaultValue={expense.description} ref={descriptionRef} />
-                        </p>
+                        <DInput type="text" defaultValue={expense.description} ref={descriptionRef} />
                     </div>
                     <div>
                         <Button onClick={updateExpense}>수정</Button>
