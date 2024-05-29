@@ -16,6 +16,26 @@ const Input = styled.input`
     border: 1px solid #ccc;
     width: 300px;
 `;
+const Label = styled.label`
+    display: inline-block;
+    padding: 10px;
+    width: 300px;
+    margin-left: 13px;
+`;
+const DInput = styled.input`
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 960px;
+    height: 100px;
+`;
+
+const DLabel = styled.label`
+    display: inline-block;
+    padding: 10px;
+    width: 960px;
+`;
 
 const Button = styled.button`
     padding: 10px 20px;
@@ -23,6 +43,8 @@ const Button = styled.button`
     border-radius: 10px;
     background-color: lightblue;
     color: white;
+    margin-right: 10px;
+    margin-top: 10px;
 `;
 
 function ExpenseDetail({ expenses, setExpenses }) {
@@ -75,16 +97,26 @@ function ExpenseDetail({ expenses, setExpenses }) {
             {expense && (
                 <>
                     <div>
+                        <Label>날짜</Label>
+                        <Label>항목</Label>
+                        <Label>금액</Label>
+                    </div>
+                    <div>
                         <Input type="date" defaultValue={expense.date} ref={dateRef} required />
                         <Input type="text" defaultValue={expense.item} ref={itemRef} required />
                         <Input type="number" defaultValue={expense.amount} ref={amountRef} required />
                     </div>
-                    <li>
-                        <Input type="text" defaultValue={expense.description} ref={descriptionRef} />
-                    </li>
-                    <Button onClick={updateExpense}>수정</Button>
-                    <Button onClick={removeExpense}>삭제</Button>
-                    <Button onClick={() => navigate('/')}>뒤로가기</Button>
+                    <div>
+                        <DLabel>내용</DLabel>
+                        <p>
+                            <DInput type="text" defaultValue={expense.description} ref={descriptionRef} />
+                        </p>
+                    </div>
+                    <div>
+                        <Button onClick={updateExpense}>수정</Button>
+                        <Button onClick={removeExpense}>삭제</Button>
+                        <Button onClick={() => navigate('/')}>뒤로가기</Button>
+                    </div>
                 </>
             )}
         </DetailContainer>
