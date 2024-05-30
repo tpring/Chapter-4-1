@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
+import { useSelector } from 'react-redux';
 
-const MonthlyList = styled.div`
+const List = styled.div`
     background-color: aliceblue;
     width: 1000px;
     margin: 10px 0;
@@ -17,16 +18,17 @@ const Tab = styled.div`
     padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
-    background-color: ${({ isActive }) => (isActive ? 'lightblue' : 'transparent')};
-    color: ${({ isActive }) => (isActive ? 'white' : 'black')};
+    background-color: ${({ active }) => (active ? 'lightblue' : 'transparent')};
+    color: ${({ active }) => (active ? 'white' : 'black')};
 `;
 
-const MonthlyExpenseList = ({ setFilteredExpenses }) => {
-    const months = Array.from({ length: 12 }, (_, i) => i + 1);
+const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+
+const MonthlyExpenseList = () => {
     const storedMonth = localStorage.getItem('selectedMonth');
     const [selectedMonth, setSelectedMonth] = useState(storedMonth ? parseInt(storedMonth) : months[0]);
 
-    const filterByMonth = (selectedMonth) => {
+    const filterByMonth = (expenses, month) => {
         const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
         const filtered = savedExpenses.filter((expense) => {
             const expenseMonth = new Date(expense.date).getMonth() + 1;
@@ -48,13 +50,13 @@ const MonthlyExpenseList = ({ setFilteredExpenses }) => {
     }, []);
 
     return (
-        <MonthlyList>
-            {months.map((month) => (
-                <Tab key={month} isActive={selectedMonth === month} onClick={() => setSelectedMonth(month)}>
+        <List>
+            {months.map((month, index) => (
+                <Tab key={index} active={selectedMonth === month} onClick={() => setSelectedMonth(month)}>
                     {month}월
                 </Tab>
             ))}
-        </MonthlyList>
+        </List>
     );
 };
 

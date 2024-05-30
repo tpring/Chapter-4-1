@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { useDispatch } from 'react-redux';
+import { addExpense } from '../../redux/slices/expensesSlice';
 
 const Form = styled.div`
     background-color: aliceblue;
@@ -33,7 +35,9 @@ const Button = styled.button`
     color: white;
 `;
 
-const ExpenseForm = ({ setExpenses }) => {
+const ExpenseForm = () => {
+    const dispatch = useDispatch();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -41,15 +45,11 @@ const ExpenseForm = ({ setExpenses }) => {
             id: uuidv4(),
             date: formData.get('date'),
             item: formData.get('item'),
-            amount: formData.get('amount'),
+            amount: parseFloat(formData.get('amount')),
             description: formData.get('description'),
         };
 
-        const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        const updatedExpenses = [...savedExpenses, newExpense];
-        localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
-
-        setExpenses(updatedExpenses);
+        dispatch(addExpense(newExpense));
         e.target.reset();
     };
 

@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { updateExpense, removeExpense } from '../../redux/slices/expensesSlice';
 
 const DetailContainer = styled.div`
     background-color: aliceblue;
@@ -53,26 +55,19 @@ const Button = styled.button`
     margin-top: 10px;
 `;
 
-function ExpenseDetail({ expenses, setExpenses }) {
+function ExpenseDetail() {
     const navigate = useNavigate();
     const { id } = useParams();
+    const dispatch = useDispatch();
+    const expenses = useSelector((state) => state.expenses);
+    const expense = expenses.find((expense) => expense.id === id);
 
     const dateRef = useRef();
     const itemRef = useRef();
     const amountRef = useRef();
     const descriptionRef = useRef();
 
-    const [expense, setExpense] = useState(null);
-
-    useEffect(() => {
-        const fetchExpense = () => {
-            const foundExpense = expenses.find((expense) => expense.id === id);
-            setExpense(foundExpense);
-        };
-        fetchExpense();
-    }, [id, expenses]);
-
-    const updateExpense = () => {
+    const handleUpdate = () => {
         const updated = {
             id,
             date: dateRef.current.value,
@@ -81,19 +76,14 @@ function ExpenseDetail({ expenses, setExpenses }) {
             description: descriptionRef.current.value,
         };
 
-        const updatedExpenses = expenses.map((expense) => (expense.id === id ? updated : expense));
-        localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
-        setExpenses(updatedExpenses);
-
+        dispatch(updateExpense(updated));
         alert('수정되었습니다.');
         navigate('/');
     };
 
-    const removeExpense = () => {
+    const handleRemove = () => {
         if (window.confirm('삭제하시겠습니까?')) {
-            const filteredExpenses = expenses.filter((expense) => expense.id !== id);
-            localStorage.setItem('expenses', JSON.stringify(filteredExpenses));
-            setExpenses(filteredExpenses);
+            dispatch(removeExpense(id));
             navigate('/');
         }
     };
@@ -117,8 +107,8 @@ function ExpenseDetail({ expenses, setExpenses }) {
                         <DInput type="text" defaultValue={expense.description} ref={descriptionRef} />
                     </div>
                     <div>
-                        <Button onClick={updateExpense}>수정</Button>
-                        <Button onClick={removeExpense}>삭제</Button>
+                        <Button onClick={handleUpdate}>수정</Button>
+                        <Button onClick={handleRemove}>삭제</Button>
                         <Button onClick={() => navigate('/')}>뒤로가기</Button>
                     </div>
                 </>

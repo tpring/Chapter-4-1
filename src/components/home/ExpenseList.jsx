@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 const List = styled.div`
     background-color: aliceblue;
@@ -46,24 +47,26 @@ const LeftCard = styled.div`
     }
 `;
 
-const ExpenseList = ({ filteredExpenses }) => {
-    const handleCardClick = (id) => {
-        window.location.href = `/detail/${id}`;
-    };
+const ExpenseList = () => {
+    const expenses = useSelector((state) => state.expenses.expenses);
 
     return (
         <List>
-            {filteredExpenses.map((expense) => (
-                <ExpenseCard key={expense.id} onClick={() => handleCardClick(expense.id)}>
-                    <LeftCard>
-                        {expense.date}
-                        <div>
-                            {expense.item} - {expense.description}
-                        </div>
-                    </LeftCard>
-                    <RightCard>{expense.amount}원</RightCard>
-                </ExpenseCard>
-            ))}
+            {expenses && expenses.length > 0 ? (
+                expenses.map((expense) => (
+                    <ExpenseCard key={expense.id}>
+                        <LeftCard>
+                            {expense.date}
+                            <div>
+                                {expense.item} - {expense.description}
+                            </div>
+                        </LeftCard>
+                        <RightCard>{expense.amount}원</RightCard>
+                    </ExpenseCard>
+                ))
+            ) : (
+                <div>No expenses found</div>
+            )}
         </List>
     );
 };
