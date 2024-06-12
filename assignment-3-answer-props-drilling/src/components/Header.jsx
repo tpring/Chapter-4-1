@@ -23,7 +23,6 @@ const Header = () => {
         </HeaderWrapper>
     );
 };
-
 export default Header;
 
 export const HeaderWrapper = styled.div`

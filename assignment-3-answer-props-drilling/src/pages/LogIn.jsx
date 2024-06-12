@@ -7,16 +7,19 @@ const LogIn = () => {
     const [idNick, setIdNick] = useInput('');
     const [password, setPassword] = useInput('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
+    const handleSubmit = () => {
         console.log({ idNick, password });
     };
 
     return (
         <Wrapper>
             <HeaderText>로그인</HeaderText>
-            <Data onSubmit={handleSubmit}>
+            <Data
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit();
+                }}
+            >
                 <Input
                     type="text"
                     value={idNick}

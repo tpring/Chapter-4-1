@@ -12,15 +12,9 @@ function App() {
 
     useEffect(() => {
         const fetchExpenses = async () => {
-            try {
-                const { data } = await axios.get('http://localhost:5000/expenses');
-                // const data = await response.json();
-                setExpenses(data);
-            } catch (error) {
-                console.error('Error =>', error);
-            }
+            const { data } = await axios.get('http://localhost:5000/expenses');
+            setExpenses(data);
         };
-
         fetchExpenses();
     }, []);
 

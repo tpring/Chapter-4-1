@@ -1,27 +1,31 @@
 import { Link } from 'react-router-dom';
-import React from 'react';
+import React, { useState } from 'react';
 import { Wrapper, HeaderText, Data, Input, Btn } from './style/LoginSignup.styled';
-import useInput from '../hooks/useInput';
+import { regiter } from '../lib/api/auth';
 
 const SignUp = () => {
-    const [id, setId] = useInput('');
-    const [password, setPassword] = useInput('');
-    const [nickName, setNickName] = useInput('');
+    const [id, setId] = useState('');
+    const [password, setPassword] = useState('');
+    const [nickname, setNickname] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleAddUser = async (e) => {
         e.preventDefault();
-
-        console.log({ id, password, nickName });
+        // register : 회원가입  API 호출 함수   src/lib/api/auth.js
+        const response = await regiter({ id, password, nickname });
+        console.log('회원가입 응답 :', response);
+        setId('');
+        setPassword('');
+        setNickname('');
     };
-
+    z;
     return (
         <Wrapper>
             <HeaderText>회원가입</HeaderText>
-            <Data onSubmit={handleSubmit}>
+            <Data onSubmit={handleAddUser}>
                 <Input
                     type="text"
                     value={id}
-                    onChange={setId}
+                    onChange={(e) => setId(e.target.value)}
                     placeholder="아이디"
                     pattern=".{4,10}"
                     title="4 ~ 10글자이상 입력하세요"
@@ -30,7 +34,7 @@ const SignUp = () => {
                 <Input
                     type="password"
                     value={password}
-                    onChange={setPassword}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="비밀번호"
                     pattern=".{4,15}"
                     title="4 ~ 15글자이상 입력하세요"
@@ -38,8 +42,8 @@ const SignUp = () => {
                 />
                 <Input
                     type="text"
-                    value={nickName}
-                    onChange={setNickName}
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
                     placeholder="닉네임"
                     pattern=".{1,10}"
                     title="1 ~ 10글자이상 입력하세요"
