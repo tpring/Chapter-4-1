@@ -1,33 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { getUser } from '../lib/api/auth';
 
 const Header = () => {
     const [user, setUser] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            navigate('/login');
+        }
+
         const fetchUser = async () => {
-            const token = localStorage.getItem('accessToken');
-            if (!token) {
-                navigate('/login');
-                return;
-            }
-
-            const { data } = await axios.get('https://moneyfulpublicpolicy.co.kr/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (data.success) {
-                setUser(data);
-            } else {
-                navigate('/login');
-            }
+            const data = await getUser();
+            setUser(data);
         };
-
         fetchUser();
     }, [navigate]);
 
@@ -39,6 +28,7 @@ const Header = () => {
     const handleHome = () => {
         navigate('/');
     };
+
     return (
         <HeaderWrapper>
             <div>
@@ -51,6 +41,7 @@ const Header = () => {
         </HeaderWrapper>
     );
 };
+
 export default Header;
 
 export const HeaderWrapper = styled.div`

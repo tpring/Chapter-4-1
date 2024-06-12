@@ -1,14 +1,24 @@
 import { Section } from '../pages/Home';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import { getUser } from '../lib/api/auth';
 
 export default function CreateExpense({ month, expenses, setExpenses }) {
     const [newDate, setNewDate] = useState(`2024-${String(month).padStart(2, '0')}-01`);
     const [newItem, setNewItem] = useState('');
     const [newAmount, setNewAmount] = useState('');
     const [newDescription, setNewDescription] = useState('');
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const userData = await getUser();
+            setUser(userData);
+        };
+        fetchUser();
+    }, []);
 
     const handleAddExpense = async () => {
         const newExpense = {
@@ -18,6 +28,7 @@ export default function CreateExpense({ month, expenses, setExpenses }) {
             item: newItem,
             amount: newAmount,
             description: newDescription,
+            createdBy: user.nickname,
         };
 
         await axios.post('http://localhost:5000/expenses', newExpense);
