@@ -1,23 +1,26 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Wrapper, HeaderText, Data, Input, Btn } from './style/LoginSignup.styled';
-import { regiter } from '../lib/api/auth';
+import { register } from '../lib/api/auth';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [nickname, setNickname] = useState('');
+    const navigate = useNavigate();
 
     const handleAddUser = async (e) => {
         e.preventDefault();
         // register : 회원가입  API 호출 함수   src/lib/api/auth.js
-        const response = await regiter({ id, password, nickname });
+        const response = await register({ id, password, nickname });
         console.log('회원가입 응답 :', response);
         setId('');
         setPassword('');
         setNickname('');
+        navigate(`/login`);
     };
-    z;
+
     return (
         <Wrapper>
             <HeaderText>회원가입</HeaderText>

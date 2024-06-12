@@ -1,15 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Header = () => {
+    const [user, setUser] = useState({});
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                navigate('/login');
+                return;
+            }
+
+            const { data } = await axios.get('https://moneyfulpublicpolicy.co.kr/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (data.success) {
+                setUser(data);
+            } else {
+                navigate('/login');
+            }
+        };
+
+        fetchUser();
+    }, [navigate]);
+
     const handleLogOut = () => {
-        navigate(`/login`);
+        localStorage.removeItem('accessToken');
+        navigate('/login');
     };
+
     const handleHome = () => {
-        navigate(`/`);
+        navigate('/');
     };
     return (
         <HeaderWrapper>
@@ -17,7 +45,7 @@ const Header = () => {
                 <Btn onClick={handleHome}>홈</Btn>
             </div>
             <div>
-                <label>로그인 정보</label>
+                <label>{user.nickname}</label>
                 <Btn onClick={handleLogOut}>로그아웃</Btn>
             </div>
         </HeaderWrapper>
