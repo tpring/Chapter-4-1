@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Wrapper, HeaderText, Data, Input, Btn } from './style/LoginSignup.styled';
+import { Wrapper, HeaderText, Data, Input, Btn } from './style/LoginSignupMy.styled';
 import { register } from '../lib/api/auth';
 import { useNavigate } from 'react-router-dom';
 

@@ -56,3 +56,35 @@ export const Btn = styled.button`
         border: solid 1px transparent;
     }
 `;
+export const BackBtn = styled.button`
+    background-color: #2ec4b6;
+    width: 190px;
+    height: 53px;
+    border-radius: 50px;
+    color: white;
+    border: solid 1px transparent;
+    font-size: 30px;
+    margin: 20px;
+
+    &:hover {
+        background: #9be9e1;
+        color: #252525;
+        border: solid 1px transparent;
+    }
+`;
+export const EditBtn = styled.button`
+    background-color: #2e63c4;
+    width: 190px;
+    height: 53px;
+    border-radius: 50px;
+    color: white;
+    border: solid 1px transparent;
+    font-size: 30px;
+    margin: 20px;
+
+    &:hover {
+        background: #93b2ec;
+        color: #252525;
+        border: solid 1px transparent;
+    }
+`;

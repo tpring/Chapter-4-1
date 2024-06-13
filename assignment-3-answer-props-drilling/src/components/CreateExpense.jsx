@@ -5,12 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { getUser } from '../lib/api/auth';
 
-export default function CreateExpense({ month, expenses, setExpenses }) {
+export default function CreateExpense({ month, expenses, setExpenses, user, setUser }) {
     const [newDate, setNewDate] = useState(`2024-${String(month).padStart(2, '0')}-01`);
     const [newItem, setNewItem] = useState('');
     const [newAmount, setNewAmount] = useState('');
     const [newDescription, setNewDescription] = useState('');
-    const [user, setUser] = useState({});
 
     useEffect(() => {
         const fetchUser = async () => {

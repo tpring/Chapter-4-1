@@ -7,18 +7,18 @@ const Header = () => {
     const [user, setUser] = useState({});
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-            navigate('/login');
-        }
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        navigate('/login');
+    }
 
+    useEffect(() => {
         const fetchUser = async () => {
             const data = await getUser();
             setUser(data);
         };
         fetchUser();
-    }, [navigate]);
+    }, []);
 
     const handleLogOut = () => {
         localStorage.removeItem('accessToken');
@@ -29,10 +29,15 @@ const Header = () => {
         navigate('/');
     };
 
+    const handleMy = () => {
+        navigate(`/my/${token}`);
+    };
+
     return (
         <HeaderWrapper>
             <div>
                 <Btn onClick={handleHome}>홈</Btn>
+                <Btn onClick={handleMy}>프로필</Btn>
             </div>
             <div>
                 <label>{user.nickname}</label>
