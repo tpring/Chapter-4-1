@@ -2,22 +2,38 @@ import { Section } from '../pages/Home';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { create } from '../lib/api/expenses';
+import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateExpense({ month, user }) {
     const [newDate, setNewDate] = useState(`2024-${String(month).padStart(2, '0')}-01`);
     const [newItem, setNewItem] = useState('');
     const [newAmount, setNewAmount] = useState('');
     const [newDescription, setNewDescription] = useState('');
+    const queryClient = new QueryClient();
+    const navigat = useNavigate();
+
+    const mutation = useMutation({
+        mutationFn: create,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['expenses']);
+            navigat(0);
+        },
+    });
 
     const handleAddExpense = async () => {
-        const { nickname, id: userId } = user;
-        const response = await create({ newDate, newItem, newAmount, newDescription, nickname, userId });
-        console.log('가게부 입력 응답 :', response);
+        // const { nickname, id: userId } = user;
+        // const response = await create({ newDate, newItem, newAmount, newDescription, nickname, userId });
+        // console.log('가게부 입력 응답 :', response);
+        const { id: userId } = user;
+
+        mutation.mutate({ newDate, newItem, newAmount, newDescription, userId });
 
         setNewDate(`2024-${String(month).padStart(2, '0')}-01`);
         setNewItem('');
         setNewAmount('');
         setNewDescription('');
+        // window.location.reload();
     };
 
     return (

@@ -20,17 +20,15 @@ export const Section = styled.section`
     padding: 20px;
 `;
 
-export default function Home({ expenses, user }) {
+export default function Home({ user }) {
     const [month, setMonth] = useState(1);
-
-    const filteredExpenses = expenses.filter((expense) => expense.month === month);
 
     return (
         <Container>
             <Header />
             <CreateExpense month={month} user={user} />
             <MonthNavigation month={month} setMonth={setMonth} />
-            <ExpenseList expenses={filteredExpenses} user={user} />
+            <ExpenseList month={month} user={user} />
         </Container>
     );
 }

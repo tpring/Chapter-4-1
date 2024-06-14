@@ -1,9 +1,14 @@
 import { Section } from '../pages/Home';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { read } from '../lib/api/expenses';
 
-export default function ExpenseList({ expenses, user }) {
+export default function ExpenseList({ month, user }) {
     const navigate = useNavigate();
+    const { data: expenses = [] } = useQuery({ queryKey: ['expenses'], queryFn: read });
+
+    const filteredExpenses = expenses.filter((expense) => expense.month === month);
 
     const handleDetail = (userId, id) => {
         if (userId === user.id) {
@@ -16,13 +21,16 @@ export default function ExpenseList({ expenses, user }) {
     return (
         <Section>
             <ExpenseItemList>
-                {expenses.map((expense) => (
-                    <ExpenseItem key={expense.id} onClick={() => handleDetail(expense.userId, expense.id)}>
+                {filteredExpenses.map((expenseItem) => (
+                    <ExpenseItem
+                        key={expenseItem.id}
+                        onClick={() => handleDetail(expenseItem.createdBy, expenseItem.id)}
+                    >
                         <ExpenseDetails>
-                            <span>{`${expense.date} (${expense.createdBy})`}</span>
-                            <span>{`${expense.item} - ${expense.description}`}</span>
+                            <span>{`${expenseItem.date} (${expenseItem.createdBy})`}</span>
+                            <span>{`${expenseItem.item} - ${expenseItem.description}`}</span>
                         </ExpenseDetails>
-                        <span>{expense.amount.toLocaleString()} 원</span>
+                        <span>{expenseItem.amount.toLocaleString()} 원</span>
                     </ExpenseItem>
                 ))}
             </ExpenseItemList>
