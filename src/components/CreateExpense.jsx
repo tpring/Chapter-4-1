@@ -1,38 +1,19 @@
 import { Section } from '../pages/Home';
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
-import { getUser } from '../lib/api/auth';
+import { useState } from 'react';
+import { create } from '../lib/api/expenses';
 
-export default function CreateExpense({ month, expenses, setExpenses, user, setUser }) {
+export default function CreateExpense({ month, user }) {
     const [newDate, setNewDate] = useState(`2024-${String(month).padStart(2, '0')}-01`);
     const [newItem, setNewItem] = useState('');
     const [newAmount, setNewAmount] = useState('');
     const [newDescription, setNewDescription] = useState('');
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            const userData = await getUser();
-            setUser(userData);
-        };
-        fetchUser();
-    }, []);
-
     const handleAddExpense = async () => {
-        const newExpense = {
-            id: uuidv4(),
-            month: parseInt(newDate.split('-')[1], 10),
-            date: newDate,
-            item: newItem,
-            amount: newAmount,
-            description: newDescription,
-            createdBy: user.nickname,
-        };
+        const { nickname, id: userId } = user;
+        const response = await create({ newDate, newItem, newAmount, newDescription, nickname, userId });
+        console.log('가게부 입력 응답 :', response);
 
-        await axios.post('http://localhost:5000/expenses', newExpense);
-
-        setExpenses([...expenses, newExpense]);
         setNewDate(`2024-${String(month).padStart(2, '0')}-01`);
         setNewItem('');
         setNewAmount('');

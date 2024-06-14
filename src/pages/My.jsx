@@ -1,19 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Wrapper, HeaderText, Data, Input, BackBtn, EditBtn } from './style/LoginSignupMy.styled';
 import { useNavigate } from 'react-router-dom';
-import { getUser, newUser } from '../lib/api/auth';
+import { newUser } from '../lib/api/auth';
 
-const My = ({ user, setUser }) => {
+const My = ({ user }) => {
     const [newNickname, setNewNickname] = useState('');
     const navigator = useNavigate();
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            const userData = await getUser();
-            setUser(userData);
-        };
-        fetchUser();
-    }, []);
 
     const handleAddUser = async (e) => {
         e.preventDefault();

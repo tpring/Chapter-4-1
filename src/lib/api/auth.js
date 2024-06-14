@@ -19,7 +19,7 @@ export const register = async ({ id, password, nickname }) => {
 //로그인
 export const call = async ({ id, password }) => {
     try {
-        const response = await axios.post('https://moneyfulpublicpolicy.co.kr/login', {
+        const response = await axios.post('https://moneyfulpublicpolicy.co.kr/login?expiresIn=1000m', {
             id: id,
             password: password,
         });
@@ -46,7 +46,7 @@ export const getUser = async () => {
     return data;
 };
 
-//회원 조회
+//프로필 수정
 export const newUser = async ({ newNickname }) => {
     try {
         const token = localStorage.getItem('accessToken');

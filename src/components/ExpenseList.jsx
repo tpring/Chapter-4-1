@@ -2,19 +2,22 @@ import { Section } from '../pages/Home';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-export default function ExpenseList({ expenses }) {
+export default function ExpenseList({ expenses, user }) {
     const navigate = useNavigate();
+
+    const handleDetail = (userId, id) => {
+        if (userId === user.id) {
+            navigate(`/detail/${id}`);
+        } else {
+            console.log(userId, user.id);
+        }
+    };
 
     return (
         <Section>
             <ExpenseItemList>
                 {expenses.map((expense) => (
-                    <ExpenseItem
-                        key={expense.id}
-                        onClick={() => {
-                            navigate(`/detail/${expense.id}`);
-                        }}
-                    >
+                    <ExpenseItem key={expense.id} onClick={() => handleDetail(expense.userId, expense.id)}>
                         <ExpenseDetails>
                             <span>{`${expense.date} (${expense.createdBy})`}</span>
                             <span>{`${expense.item} - ${expense.description}`}</span>

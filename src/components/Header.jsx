@@ -4,9 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { getUser } from '../lib/api/auth';
 
 const Header = () => {
-    const [user, setUser] = useState({});
     const navigate = useNavigate();
-
+    const [user, setUser] = useState({});
     const token = localStorage.getItem('accessToken');
     if (!token) {
         navigate('/login');
@@ -14,8 +13,8 @@ const Header = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const data = await getUser();
-            setUser(data);
+            const userData = await getUser();
+            setUser(userData);
         };
         fetchUser();
     }, []);
